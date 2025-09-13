@@ -51,7 +51,7 @@ class BookCollection:
     @classmethod
     async def select_all_book_by_store_spot(cls, store_spot: str) -> list[BookDocument]:
         result = await cls._collection.find(
-            filter={"store_spot": store_spot}, sort=[("request_count", -1)]
+            filter={"store_spot": store_spot}
         ).to_list(length=None)
 
         return [cls._parse(document) for document in result]
