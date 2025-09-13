@@ -8,6 +8,7 @@ uvicorn = "*"
 fastapi = "*"
 pydantic-settings = "*"
 motor = "*"
+pre-commit = "*"
 
 [dev-packages]
 
