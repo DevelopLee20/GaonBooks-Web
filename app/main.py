@@ -4,10 +4,6 @@ from fastapi.responses import FileResponse
 from typing import Any, Dict
 
 from app.core.env import env
-from app.core.database import db
-
-# db 연결 확인
-db = db
 
 app = FastAPI(
     openapi_url=None if env.MODE == "prod" else "/openapi.json",
