@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
-from app.collections.book_collection import BookCollection
+from app.services.book_service import BookService
 from app.documents.book_document import BookDocument
 from app.schemas.book_schema import (
     AddBookData,
@@ -22,11 +22,8 @@ router = APIRouter(
     summary="책을 추가합니다",
 )
 async def add_book(book_data: BookCreateModel) -> AddBookResponse:
-    # Create a BookDocument instance from the request data
-    book_document = BookDocument(**book_data.model_dump())
+    inserted_id = await BookService.insert_book(book_data=book_data)
 
-    # Insert into the database
-    inserted_id = await BookCollection.insert_book(document=book_document)
     return AddBookResponse(
         detail="책이 성공적으로 추가되었습니다.",
         added_book=AddBookData(inserted_id=inserted_id),
@@ -41,7 +38,8 @@ async def add_book(book_data: BookCreateModel) -> AddBookResponse:
     summary="제목으로 책을 검색합니다. (유사한 제목 포함)",
 )
 async def get_books_by_title(book_title: str) -> GetBooksResponse:
-    books = await BookCollection.select_book_by_book_title(book_title=book_title)
+    books = await BookService.select_books_by_title(book_title=book_title)
+
     if not books:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
