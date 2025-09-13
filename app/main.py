@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from typing import Any, Dict
 from contextlib import asynccontextmanager
+from bson import ObjectId # Import ObjectId
 
 from app.core.env import env
 from app.collections import create_all_indexes
@@ -23,6 +24,7 @@ app = FastAPI(
     docs_url=None if env.MODE == "prod" else "/docs",
     redoc_url=None if env.MODE == "prod" else "/redoc",
     lifespan=lifespan,
+    json_encoders={ObjectId: str} # Add this line
 )
 
 app.add_middleware(
