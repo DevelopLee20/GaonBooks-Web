@@ -7,8 +7,12 @@ name = "pypi"
 pre-commit = "*"
 motor = "*"
 pydantic-settings = "*"
+fastapi = "*"
+uvicorn = "*"
+gunicorn = "*"
 
 [dev-packages]
+ruff = "*"
 
 [requires]
 python_version = "3.12"
