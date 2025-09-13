@@ -4,15 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pre-commit = "*"
-motor = "*"
-pydantic-settings = "*"
-fastapi = "*"
 uvicorn = "*"
-gunicorn = "*"
+fastapi = "*"
+pydantic-settings = "*"
+motor = "*"
 
 [dev-packages]
-ruff = "*"
 
 [requires]
 python_version = "3.12"

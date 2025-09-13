@@ -23,3 +23,7 @@ pipenv run gunicorn app.main:app \
     --log-level info \
     --daemon
 ```
+
+```bash
+pipenv run uvicorn app.main:app --reload
+```
