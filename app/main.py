@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 
 from app.core.env import env
 from app.collections import create_all_indexes
+from app.routers import book_router
 
 
 @asynccontextmanager
@@ -31,6 +32,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include the book router
+app.include_router(book_router.router)
 
 
 @app.get("/favicon.ico", include_in_schema=False)

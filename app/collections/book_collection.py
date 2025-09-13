@@ -2,6 +2,7 @@ import dataclasses
 from typing import Any
 from bson import ObjectId
 from datetime import datetime
+from typing import List
 
 from app.core.database import db
 from app.documents.book_document import BookDocument
@@ -41,15 +42,15 @@ class BookCollection:
         return result.deleted_count > 0
 
     @classmethod
-    async def select_book_by_book_title(cls, book_title: str) -> BookDocument | None:
-        result = await cls._collection.find_one(
+    async def select_book_by_book_title(cls, book_title: str) -> List[BookDocument]:
+        result = await cls._collection.find(
             filter={"book_title": {"$regex": book_title, "$options": "i"}}
-        )
+        ).to_list(length=None)
 
-        return cls._parse(result) if result else None
+        return [cls._parse(document) for document in result]
 
     @classmethod
-    async def select_all_book_by_store_spot(cls, store_spot: str) -> list[BookDocument]:
+    async def select_all_book_by_store_spot(cls, store_spot: str) -> List[BookDocument]:
         result = await cls._collection.find(
             filter={"store_spot": store_spot}
         ).to_list(length=None)
