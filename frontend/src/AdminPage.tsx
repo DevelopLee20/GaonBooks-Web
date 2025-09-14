@@ -9,6 +9,15 @@ const AdminPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [storeSpot, setStoreSpot] = useState<string>(''); // This will come from the logged-in user's context or a selection
 
+  // 지점을 한글로 변경하는 부분
+  const storeSpotMap: { [key: string]: string } = {
+    soonchunhyang: '순천향대학교',
+    develop: '개발용',
+    // Add other store spots as needed
+  };
+
+  const displayStoreSpot = storeSpot ? storeSpotMap[storeSpot] || storeSpot : '';
+
   // In a real application, storeSpot would likely come from user context after login
   // For now, we'll try to get it from localStorage or prompt the user
   useEffect(() => {
@@ -72,7 +81,7 @@ const AdminPage: React.FC = () => {
       }
 
       const result = await response.json();
-      setMessage(`파일 업로드 성공: ${result.detail}. 추가된 책 수: ${result.added_books_count}`);
+      setMessage(`${result.detail}\n\n총 책 수: ${result.added_books_count}`);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -101,7 +110,7 @@ const AdminPage: React.FC = () => {
           </div>
 
           <div className="mb-3">
-            <p>현재 지점: <strong>{storeSpot || '정보 없음'}</strong></p>
+            <p>현재 지점: <strong>{displayStoreSpot || '정보 없음'}</strong></p>
           </div>
 
           <button type="submit" className="btn btn-primary w-100" disabled={loading}>
