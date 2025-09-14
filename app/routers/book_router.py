@@ -5,7 +5,6 @@ from fastapi import APIRouter, File, HTTPException, UploadFile, status
 
 from app.core.enums import STORE_SPOT
 from app.services.book_service import BookService
-from app.utils.book_util import BookUtil
 from app.schemas.book_schema import (
     AddBookData,
     AddBookResponse,
@@ -38,6 +37,10 @@ async def upload_books_from_excel(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="엑셀 파일(.xlsx)만 업로드할 수 있습니다.",
         )
+
+    del_files = await BookService.delete_books_by_store_spot(
+        store_spot=store_spot.value
+    )
 
     contents = await file.read()
     df = pd.read_excel(io.BytesIO(contents), engine="openpyxl")
@@ -89,6 +92,7 @@ async def upload_books_from_excel(
         detail="엑셀 파일의 책 목록을 성공적으로 추가했습니다.",
         total_books_in_file=total_books_in_file,
         added_books_count=added_books_count,
+        deleted_books_count=del_files,
         status_code=status.HTTP_201_CREATED,
     )
 

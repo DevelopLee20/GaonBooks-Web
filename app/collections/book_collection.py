@@ -1,7 +1,6 @@
 import dataclasses
 from typing import Any
 from bson import ObjectId
-from datetime import datetime
 from typing import List
 
 from app.core.database import db
@@ -28,52 +27,35 @@ class BookCollection:
             professor_name=document["professor_name"],
             location=document["location"],
             order_date=document["order_date"],
-            deleted_at=document.get("deleted_at"),
         )
 
     @classmethod
     async def insert_book(cls, document: BookDocument) -> str | None:
-        update_data = dataclasses.asdict(document)
-        update_data.pop("_id", None)
-        update_data["deleted_at"] = None
+        insert_data = dataclasses.asdict(document)
+        insert_data.pop("_id", None)
 
-        query = {
-            "store_spot": document.store_spot,
-            "book_title": document.book_title,
-            "author": document.author,
-            "publisher": document.publisher,
-        }
+        result = await cls._collection.insert_one(insert_data)
 
-        result = await cls._collection.update_one(
-            filter=query,
-            update={"$set": update_data},
-            upsert=True,
-        )
+        if result.inserted_id:
+            return str(result.inserted_id)
 
-        if result.upserted_id:
-            return str(result.upserted_id)
-        else:
-            updated_document = await cls._collection.find_one(query)
-
-            if updated_document is None:
-                return None
-
-            return str(updated_document["_id"])
+        return None
 
     @classmethod
-    async def soft_delete_book_by_id(cls, id: str) -> bool:
-        result = await cls._collection.update_one(
-            {"_id": ObjectId(id)},
-            {"$set": {"deleted_at": datetime.now()}},
-        )
-        return result.modified_count > 0
+    async def delete_book_by_id(cls, id: str) -> bool:
+        result = await cls._collection.delete_one(filter={"_id": ObjectId(id)})
+        return result.deleted_count > 0
+
+    @classmethod
+    async def delete_books_by_store_spot(cls, store_spot: str) -> int:
+        result = await cls._collection.delete_many(filter={"store_spot": store_spot})
+        return result.deleted_count
 
     @classmethod
     async def select_book_by_book_title(cls, book_title: str) -> List[BookDocument]:
         result = await cls._collection.find(
             filter={
                 "book_title": {"$regex": book_title, "$options": "i"},
-                "deleted_at": None,
             }
         ).to_list(length=None)
 
@@ -84,7 +66,6 @@ class BookCollection:
         result = await cls._collection.find(
             filter={
                 "store_spot": store_spot,
-                "deleted_at": None,
             }
         ).to_list(length=None)
 

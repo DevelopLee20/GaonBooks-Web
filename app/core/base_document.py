@@ -1,5 +1,4 @@
 import dataclasses
-from datetime import datetime
 from typing import Annotated, Any
 
 from bson import ObjectId
@@ -26,7 +25,6 @@ PydanticObjectId = Annotated[
 @dataclasses.dataclass(kw_only=True, frozen=True)
 class BaseModel:
     _id: PydanticObjectId = dataclasses.field(default_factory=ObjectId)
-    deleted_at: datetime | None = None
 
     @property
     def id(self) -> PydanticObjectId | None:

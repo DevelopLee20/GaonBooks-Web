@@ -1,8 +1,7 @@
-import re
 from datetime import datetime
 from typing import List
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 
 from app.core.base_response import BaseResponseModel
 from app.core.enums import STORE_SPOT
@@ -45,4 +44,5 @@ class DeleteBookResponse(BaseResponseModel):
 
 class UploadBooksResponse(BaseResponseModel):
     total_books_in_file: int = Field(..., description="엑셀 파일에 있는 총 책 수")
+    deleted_books_count: int = Field(..., description="기존의 책 수")
     added_books_count: int = Field(..., description="성공적으로 추가된 책 수")
