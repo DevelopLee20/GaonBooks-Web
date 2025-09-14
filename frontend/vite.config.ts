@@ -11,6 +11,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/auth/, '/auth'),
       },
+      '/books': {
+        target: 'http://localhost:8000', // 백엔드 서버 주소 (필요에 따라 변경)
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/books/, '/books'),
+      },
     },
   },
 })
