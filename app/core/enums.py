@@ -8,3 +8,4 @@ class MODE(str, Enum):
 
 class STORE_SPOT(str, Enum):
     soonchunhyang = "soonchunhyang"
+    develop = "develop"

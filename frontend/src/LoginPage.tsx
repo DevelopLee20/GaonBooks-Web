@@ -1,12 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
-  const STORE_SPOT_OPTIONS = ['soonchunhyang']; // app/core/enums.py에서 확인한 값
-  const [storeSpot, setStoreSpot] = useState<string>(STORE_SPOT_OPTIONS[0]); // 초기값 설정
+  const [storeSpotOptions, setStoreSpotOptions] = useState<string[]>([]);
+  const [storeSpot, setStoreSpot] = useState<string>('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [optionsLoading, setOptionsLoading] = useState(true);
+  const [optionsError, setOptionsError] = useState('');
+
+  useEffect(() => {
+    const fetchStoreSpotOptions = async () => {
+      try {
+        const response = await fetch('/auth/store-spots');
+        if (!response.ok) {
+          throw new Error('Failed to fetch store spot options');
+        }
+        const data: string[] = await response.json();
+        setStoreSpotOptions(data);
+        if (data.length > 0) {
+          setStoreSpot(data[0]);
+        }
+      } catch (err: any) {
+        setOptionsError(err.message);
+      } finally {
+        setOptionsLoading(false);
+      }
+    };
+    fetchStoreSpotOptions();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +56,8 @@ const LoginPage: React.FC = () => {
       console.log('Login successful:', data);
       // Here you would typically store the token (e.g., in localStorage or a state management solution)
       // and redirect the user to a protected route.
-      alert('Login successful! Token: ' + data.access_token);
+      // alert('Login successful! Token: ' + data.access_token); // 제거
+      navigate(`/search/${storeSpot}`); // 추가
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -75,19 +101,25 @@ const LoginPage: React.FC = () => {
             <label htmlFor="storeSpot" className="form-label">
               Store Spot
             </label>
-            <select
-              id="storeSpot"
-              className="form-control mb-3"
-              value={storeSpot}
-              onChange={(e) => setStoreSpot(e.target.value)}
-              required
-            >
-              {STORE_SPOT_OPTIONS.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
+            {optionsLoading ? (
+              <p>Loading store spots...</p>
+            ) : optionsError ? (
+              <p className="text-danger">{optionsError}</p>
+            ) : (
+              <select
+                id="storeSpot"
+                className="form-control mb-3"
+                value={storeSpot}
+                onChange={(e) => setStoreSpot(e.target.value)}
+                required
+              >
+                {storeSpotOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
           <div className="d-grid">
             <button

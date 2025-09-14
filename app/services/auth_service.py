@@ -13,16 +13,22 @@ class AuthService:
     async def login_for_access_token(cls, login_request: LoginRequest) -> Token:
         user = await UserCollection.get_user_by_user_id(login_request.user_id)
 
-        if (
-            not user
-            or not security.verify_password(
-                login_request.password, user.hashed_password
-            )
-            or user.store_spot != login_request.store_spot
-        ):
+        if not user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="로그인 정보가 올바르지 않습니다.",
+                detail="로그인 정보가 올바르지 않습니다. (사용자 없음)",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        if not security.verify_password(login_request.password, user.hashed_password):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="로그인 정보가 올바르지 않습니다. (비밀번호 불일치)",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        if user.store_spot != login_request.store_spot:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="로그인 정보가 올바르지 않습니다. (지점 불일치)",
                 headers={"WWW-Authenticate": "Bearer"},
             )
 
