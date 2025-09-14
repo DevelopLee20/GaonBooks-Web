@@ -9,14 +9,14 @@
 pipenv run pre-commit run --all-files
 ```
 
-## run
+## run - backend
 
 ```bash
 pipenv run gunicorn app.main:app \
     --name gaonbooks-dev \
     -w 2 \
     -k uvicorn.workers.UvicornWorker \
-    --bind 0.0.0.0:5555 \
+    --bind 0.0.0.0:8000 \
     --access-logfile ./gunicorn-access.log \
     --error-logfile ./gunicorn-error.log \
     --capture-output \
@@ -26,4 +26,10 @@ pipenv run gunicorn app.main:app \
 
 ```bash
 pipenv run uvicorn app.main:app --reload
+```
+
+# run - frontend
+
+```bash
+npm run dev -- --port 5555
 ```
