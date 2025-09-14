@@ -12,6 +12,13 @@ const LoginPage: React.FC = () => {
   const [optionsLoading, setOptionsLoading] = useState(true);
   const [optionsError, setOptionsError] = useState('');
 
+  // 지점을 한글로 변경하는 부분
+  const storeSpotMap: { [key: string]: string } = {
+    soonchunhyang: '순천향대학교',
+    develop: '개발용',
+    // Add other store spots as needed
+  };
+
   useEffect(() => {
     const fetchStoreSpotOptions = async () => {
       try {
@@ -68,14 +75,14 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="container-fluid d-flex align-items-center justify-content-center vh-100 bg-light">
+    <div className="container-fluid d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
       <div className="card p-4 shadow-lg" style={{ width: '420px', borderTop: '5px solid #7ac142' }}>
-        <h2 className="card-title text-success text-uppercase fw-bold mb-4">Login</h2>
+        <h2 className="card-title text-success text-uppercase fw-bold mb-4">가온북스 도서검색</h2>
         <form onSubmit={handleSubmit} className="mt-4">
           {error && <p className="text-danger text-center mb-4">{error}</p>}
           <div className="mb-4">
             <label htmlFor="userId" className="form-label">
-              User ID
+              관리자 아이디
             </label>
             <input
               type="text"
@@ -88,7 +95,7 @@ const LoginPage: React.FC = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="password" className="form-label">
-              Password
+              비밀번호
             </label>
             <input
               type="password"
@@ -101,7 +108,7 @@ const LoginPage: React.FC = () => {
           </div>
           <div className="mb-6">
             <label htmlFor="storeSpot" className="form-label">
-              Store Spot
+              가온북스 지점
             </label>
             {optionsLoading ? (
               <p>Loading store spots...</p>
@@ -117,7 +124,7 @@ const LoginPage: React.FC = () => {
               >
                 {storeSpotOptions.map((option) => (
                   <option key={option} value={option}>
-                    {option}
+                    {storeSpotMap[option] || option}
                   </option>
                 ))}
               </select>
@@ -129,10 +136,14 @@ const LoginPage: React.FC = () => {
               className="btn btn-success rounded-pill w-100 mt-4"
               disabled={loading}
             >
-              {loading ? 'Logging in...' : 'Login'}
+              {loading ? 'Logging in...' : '로그인'}
             </button>
           </div>
         </form>
+      </div>
+      <div className="text-center text-muted mt-3" style={{ fontSize: '0.8em' }}>
+        <p className="mb-0">version 1.0.0</p>
+        <p className="mb-0">author developlee20</p>
       </div>
     </div>
   );

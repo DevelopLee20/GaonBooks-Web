@@ -13,6 +13,15 @@ const SearchPage: React.FC = () => {
 
   const isAuthenticated = useRef(false); // To prevent multiple redirects
 
+  // 지점을 한글로 변경하는 부분
+  const storeSpotMap: { [key: string]: string } = {
+    soonchunhyang: '순천향대학교',
+    develop: '개발용',
+    // Add other store spots as needed
+  };
+
+  const displayStoreSpot = storeSpot ? storeSpotMap[storeSpot] || storeSpot : '';
+
   useEffect(() => {
     const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
     if (!token && !isAuthenticated.current) {
@@ -27,11 +36,11 @@ const SearchPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleLogout = () => {
-    // 로그아웃 로직 (예: 토큰 삭제)
-    alert('로그아웃 되었습니다.');
-    navigate('/login'); // 로그인 페이지로 리다이렉션
-  };
+  // const handleLogout = () => {
+  //   // 로그아웃 로직 (예: 토큰 삭제)
+  //   alert('로그아웃 되었습니다.');
+  //   navigate('/login'); // 로그인 페이지로 리다이렉션
+  // };
 
   const handleSearch = async () => {
     if (!searchTerm.trim()) {
@@ -68,7 +77,7 @@ const SearchPage: React.FC = () => {
     <div className="container-fluid d-flex align-items-center justify-content-center bg-light">
       <div className="card p-4 shadow-lg d-flex flex-column" style={{ width: '90%', height: '90%', borderTop: '5px solid #7ac142' }}>
         <h2 className="card-title text-success text-uppercase fw-bold mb-4 text-center">
-          {storeSpot ? `${storeSpot} 검색 페이지` : '검색 페이지'}
+          {"가온북스 도서 위치 검색 페이지"}
           <button
             onClick={() => navigate('/admin')}
             style={{
@@ -84,7 +93,7 @@ const SearchPage: React.FC = () => {
           ></button>
         </h2>
         <div className="text-center mb-4">
-          <p>환영합니다! 이곳은 {storeSpot} 지점의 검색 페이지입니다.</p>
+          <p>지점: {displayStoreSpot}</p>
           {/* 여기에 검색 입력 필드 및 버튼 추가 예정 */}
           <input
             type="text"
@@ -128,11 +137,11 @@ const SearchPage: React.FC = () => {
             </ul>
           )}
         </div>
-        <div className="d-grid mt-4">
+        {/* <div className="d-grid mt-4">
           <button className="btn btn-outline-secondary rounded-pill" onClick={handleLogout}>
             로그아웃
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

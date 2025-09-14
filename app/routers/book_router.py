@@ -152,7 +152,7 @@ async def get_books_by_title(book_title: str, store_spot: STORE_SPOT) -> GetBook
     if not books:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Book with title '{book_title}' not found",
+            detail=f"'{book_title}' 해당 제목의 도서를 찾을 수 없습니다.",
         )
     return GetBooksResponse(
         detail="책을 성공적으로 찾았습니다.",
