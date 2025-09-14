@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "01debd3ff16a9e8d31525191c528a827386c0663e20df510fb85a17965446a03"
+            "sha256": "816fa6032a0fe03895ac398d7b080171c1cf7f9cd54cead6c69d8ceb9a26d18c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -488,6 +488,15 @@
             ],
             "markers": "python_version >= '3.9'",
             "version": "==2.33.2"
+        },
+        "pydantic-settings": {
+            "hashes": [
+                "sha256:06f0062169818d0f5524420a360d632d5857b83cffd4d42fe29597807a1614ee",
+                "sha256:a60952460b99cf661dc25c29c0ef171721f98bfcb52ef8d9ea4c943d7c8cc796"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.9'",
+            "version": "==2.10.1"
         },
         "pymongo": {
             "hashes": [

@@ -13,6 +13,8 @@ openpyxl = "*"
 python-multipart = "*"
 passlib = {extras = ["bcrypt"], version = "*"}
 python-jose = "*"
+pydantic-settings = "*"
+motor = "*"
 
 [dev-packages]
 
