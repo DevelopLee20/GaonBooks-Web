@@ -109,7 +109,7 @@ const AdminPage: React.FC = () => {
           </button>
         </form>
         <div className="mt-3 text-center">
-          <button className="btn btn-link" onClick={() => navigate('/search')}>검색 페이지로 돌아가기</button>
+          <button className="btn btn-link" onClick={() => navigate(`/search/${storeSpot}`)}>검색 페이지로 돌아가기</button>
         </div>
       </div>
     </div>
