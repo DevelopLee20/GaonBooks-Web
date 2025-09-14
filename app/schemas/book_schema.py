@@ -27,12 +27,14 @@ class BookCreateModel(BaseModel):
 class AddBookData(BaseModel):
     inserted_id: str
 
+
 class AddBookResponse(BaseResponseModel):
     added_book: AddBookData = Field(..., description="추가된 도서 정보")
+
 
 class GetBooksResponse(BaseResponseModel):
     books: List[BookDocument] = Field(..., description="조회된 도서 목록")
 
+
 class DeleteBookResponse(BaseResponseModel):
     pass
-

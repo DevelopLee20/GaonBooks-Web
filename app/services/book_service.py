@@ -7,7 +7,7 @@ from app.collections.book_collection import BookCollection
 
 class BookService:
     @classmethod
-    async def insert_book(cls, book_data: BookCreateModel) -> str:
+    async def insert_book(cls, book_data: BookCreateModel) -> str | None:
         book_document = BookDocument(
             store_spot=book_data.store_spot,
             subject_name=book_data.subject_name,

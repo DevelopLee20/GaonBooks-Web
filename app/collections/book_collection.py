@@ -7,6 +7,7 @@ from typing import List
 from app.core.database import db
 from app.documents.book_document import BookDocument
 
+
 class BookCollection:
     _collection = db["book"]
 
@@ -31,11 +32,33 @@ class BookCollection:
         )
 
     @classmethod
-    async def insert_book(cls, document: BookDocument) -> str:
-        insert_document = dataclasses.asdict(document)
-        result = await cls._collection.insert_one(document=insert_document)
+    async def insert_book(cls, document: BookDocument) -> str | None:
+        update_data = dataclasses.asdict(document)
+        update_data.pop("_id", None)
+        update_data["deleted_at"] = None
 
-        return str(result.inserted_id)
+        query = {
+            "store_spot": document.store_spot,
+            "book_title": document.book_title,
+            "author": document.author,
+            "publisher": document.publisher,
+        }
+
+        result = await cls._collection.update_one(
+            filter=query,
+            update={"$set": update_data},
+            upsert=True,
+        )
+
+        if result.upserted_id:
+            return str(result.upserted_id)
+        else:
+            updated_document = await cls._collection.find_one(query)
+
+            if updated_document is None:
+                return None
+
+            return str(updated_document["_id"])
 
     @classmethod
     async def soft_delete_book_by_id(cls, id: str) -> bool:

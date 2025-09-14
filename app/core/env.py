@@ -9,4 +9,4 @@ class Env(BaseSettings):
         env_file = ".env"
 
 
-env = Env() # type: ignore
+env = Env()  # type: ignore

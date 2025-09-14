@@ -1,9 +1,9 @@
 import dataclasses
-from datetime import datetime
 from pydantic import Field
 
 from app.core.base_document import BaseModel
 from app.core.enums import STORE_SPOT
+
 
 @dataclasses.dataclass(kw_only=True, frozen=True)
 class BookDocument(BaseModel):

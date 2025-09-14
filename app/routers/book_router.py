@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
 from app.services.book_service import BookService
-from app.documents.book_document import BookDocument
 from app.schemas.book_schema import (
     AddBookData,
     AddBookResponse,
@@ -24,6 +23,12 @@ router = APIRouter(
 )
 async def add_book(book_data: BookCreateModel) -> AddBookResponse:
     inserted_id = await BookService.insert_book(book_data=book_data)
+
+    if inserted_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="책 추가를 실패했습니다.",
+        )
 
     return AddBookResponse(
         detail="책이 성공적으로 추가되었습니다.",
