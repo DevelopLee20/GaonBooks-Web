@@ -10,18 +10,18 @@ class BookCreateModel(BaseModel):
     """Model for creating a new book, received from a client."""
 
     store_spot: STORE_SPOT = Field(..., description="지점명")
-    subject_name: str | None = Field(default=None, description="과목명")
+    subject_name: str | None = Field(..., description="과목명")
     book_title: str = Field(..., description="도서명")
-    author: str | None = Field(default=None, description="저자")
-    publisher: str | None = Field(default=None, description="출판사")
+    author: str | None = Field(..., description="저자")
+    publisher: str | None = Field(..., description="출판사")
     request_count: int | None = Field(default=0, description="신청")
     received_count: int | None = Field(default=0, description="입고")
-    price: int | None = Field(default=None, description="가격")
+    price: int | None = Field(..., description="가격")
     fulfillment_rate: float | None = Field(default=0.0, description="입고율")
-    major: str | None = Field(default=None, description="전공")
-    professor_name: str | None = Field(default=None, description="교수명")
-    location: str | None = Field(default=None, description="위치")
-    order_count: int | None = Field(default=0, description="주문")
+    major: str | None = Field(..., description="전공")
+    professor_name: str | None = Field(..., description="교수명")
+    location: str | None = Field(..., description="위치")
+    order_count: int | None = Field(..., description="주문")
 
 
 class AddBookData(BaseModel):
