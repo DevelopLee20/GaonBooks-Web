@@ -5,6 +5,7 @@ from fastapi import APIRouter, File, HTTPException, UploadFile, status
 
 from app.core.enums import STORE_SPOT
 from app.services.book_service import BookService
+from app.utils.book_util import BookUtil
 from app.schemas.book_schema import (
     AddBookData,
     AddBookResponse,
@@ -70,10 +71,10 @@ async def upload_books_from_excel(
             book_title=book_title,
             author=author,
             publisher=row.get("출판사"),
-            request_count=row.get("신청"),
-            received_count=row.get("입고"),
-            price=row.get("가격"),
-            fulfillment_rate=row.get("입고율"),
+            request_count=str(row.get("신청", "0")),
+            received_count=str(row.get("입고", "0")),
+            price=str(row.get("가격")),
+            fulfillment_rate=str(row.get("입고율")),
             major=row.get("전공"),
             professor_name=row.get("교수명"),
             location=row.get("위치"),

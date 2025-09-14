@@ -1,6 +1,8 @@
-from pydantic import BaseModel, Field
-from typing import List
+import re
 from datetime import datetime
+from typing import List
+
+from pydantic import BaseModel, Field, field_validator
 
 from app.core.base_response import BaseResponseModel
 from app.core.enums import STORE_SPOT
@@ -15,10 +17,10 @@ class BookCreateModel(BaseModel):
     book_title: str = Field(..., description="도서명")
     author: str | None = Field(..., description="저자")
     publisher: str | None = Field(..., description="출판사")
-    request_count: int | None = Field(default=0, description="신청")
-    received_count: int | None = Field(default=0, description="입고")
-    price: int | None = Field(..., description="가격")
-    fulfillment_rate: float | None = Field(default=0.0, description="입고율")
+    request_count: str | None = Field(..., description="신청")
+    received_count: str | None = Field(..., description="입고")
+    price: str | None = Field(..., description="가격")
+    fulfillment_rate: str | None = Field(..., description="입고율")
     major: str | None = Field(..., description="전공")
     professor_name: str | None = Field(..., description="교수명")
     location: str | None = Field(..., description="위치")
