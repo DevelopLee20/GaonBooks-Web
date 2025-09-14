@@ -33,3 +33,6 @@ class AddBookResponse(BaseResponseModel):
 class GetBooksResponse(BaseResponseModel):
     books: List[BookDocument] = Field(..., description="조회된 도서 목록")
 
+class DeleteBookResponse(BaseResponseModel):
+    pass
+

@@ -1,8 +1,9 @@
 import dataclasses
+from datetime import datetime
 from typing import Annotated, Any
 
 from bson import ObjectId
-from pydantic import Field, BeforeValidator, PlainSerializer, WithJsonSchema
+from pydantic import BeforeValidator, PlainSerializer, WithJsonSchema
 
 
 # Custom type for ObjectId to handle Pydantic v2 and JSON Schema
@@ -12,6 +13,7 @@ def validate_objectid(v: Any) -> ObjectId:
     if isinstance(v, str) and ObjectId.is_valid(v):
         return ObjectId(v)
     raise ValueError("Invalid ObjectId")
+
 
 PydanticObjectId = Annotated[
     ObjectId,
@@ -24,6 +26,7 @@ PydanticObjectId = Annotated[
 @dataclasses.dataclass(kw_only=True, frozen=True)
 class BaseModel:
     _id: PydanticObjectId = dataclasses.field(default_factory=ObjectId)
+    deleted_at: datetime | None = None
 
     @property
     def id(self) -> PydanticObjectId | None:

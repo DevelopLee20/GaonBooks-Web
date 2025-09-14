@@ -27,6 +27,7 @@ class BookCollection:
             professor_name=document["professor_name"],
             location=document["location"],
             order_count=document["order_count"],
+            deleted_at=document.get("deleted_at"),
         )
 
     @classmethod
@@ -37,14 +38,20 @@ class BookCollection:
         return str(result.inserted_id)
 
     @classmethod
-    async def delete_book_by_id(cls, id: str) -> bool:
-        result = await cls._collection.delete_one({"_id": ObjectId(id)})
-        return result.deleted_count > 0
+    async def soft_delete_book_by_id(cls, id: str) -> bool:
+        result = await cls._collection.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {"deleted_at": datetime.now()}},
+        )
+        return result.modified_count > 0
 
     @classmethod
     async def select_book_by_book_title(cls, book_title: str) -> List[BookDocument]:
         result = await cls._collection.find(
-            filter={"book_title": {"$regex": book_title, "$options": "i"}}
+            filter={
+                "book_title": {"$regex": book_title, "$options": "i"},
+                "deleted_at": None,
+            }
         ).to_list(length=None)
 
         return [cls._parse(document) for document in result]
@@ -52,7 +59,10 @@ class BookCollection:
     @classmethod
     async def select_all_book_by_store_spot(cls, store_spot: str) -> List[BookDocument]:
         result = await cls._collection.find(
-            filter={"store_spot": store_spot}
+            filter={
+                "store_spot": store_spot,
+                "deleted_at": None,
+            }
         ).to_list(length=None)
 
         return [cls._parse(document) for document in result]

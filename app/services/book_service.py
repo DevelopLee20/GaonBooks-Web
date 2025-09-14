@@ -28,6 +28,10 @@ class BookService:
         return inserted_id
 
     @classmethod
+    async def delete_book_by_id(cls, book_id: str) -> bool:
+        return await BookCollection.soft_delete_book_by_id(id=book_id)
+
+    @classmethod
     async def select_books_by_title(cls, book_title: str) -> List[BookDocument]:
         books = await BookCollection.select_book_by_book_title(book_title=book_title)
 

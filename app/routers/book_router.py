@@ -6,6 +6,7 @@ from app.schemas.book_schema import (
     AddBookData,
     AddBookResponse,
     BookCreateModel,
+    DeleteBookResponse,
     GetBooksResponse,
 )
 
@@ -28,6 +29,25 @@ async def add_book(book_data: BookCreateModel) -> AddBookResponse:
         detail="책이 성공적으로 추가되었습니다.",
         added_book=AddBookData(inserted_id=inserted_id),
         status_code=status.HTTP_201_CREATED,
+    )
+
+
+@router.delete(
+    "/{book_id}",
+    response_model=DeleteBookResponse,
+    status_code=status.HTTP_200_OK,
+    summary="책을 삭제합니다.",
+)
+async def delete_book(book_id: str) -> DeleteBookResponse:
+    if not await BookService.delete_book_by_id(book_id=book_id):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Book with id '{book_id}' not found",
+        )
+
+    return DeleteBookResponse(
+        detail="책이 성공적으로 삭제되었습니다.",
+        status_code=status.HTTP_200_OK,
     )
 
 
