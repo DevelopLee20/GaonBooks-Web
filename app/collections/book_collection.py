@@ -5,6 +5,7 @@ from typing import List
 
 from app.core.database import db
 from app.documents.book_document import BookDocument
+from app.core.enums import STORE_SPOT
 
 
 class BookCollection:
@@ -14,7 +15,7 @@ class BookCollection:
     def _parse(cls, document: dict[str, Any]) -> BookDocument:
         return BookDocument(
             _id=document["_id"],
-            store_spot=document["store_spot"],
+            store_spot=STORE_SPOT(document["store_spot"]),
             subject_name=document["subject_name"],
             book_title=document["book_title"],
             author=document["author"],
