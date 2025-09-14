@@ -146,8 +146,8 @@ async def delete_book(book_id: str) -> DeleteBookResponse:
     status_code=status.HTTP_200_OK,
     summary="제목으로 책을 검색합니다. (유사한 제목 포함)",
 )
-async def get_books_by_title(book_title: str) -> GetBooksResponse:
-    books = await BookService.select_books_by_title(book_title=book_title)
+async def get_books_by_title(book_title: str, store_spot: STORE_SPOT) -> GetBooksResponse:
+    books = await BookService.select_books_by_title(book_title=book_title, store_spot=store_spot)
 
     if not books:
         raise HTTPException(

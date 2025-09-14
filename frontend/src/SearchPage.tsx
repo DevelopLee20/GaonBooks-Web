@@ -46,7 +46,7 @@ const SearchPage: React.FC = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`/books/search/${searchTerm}`, {
+      const response = await fetch(`/books/search/${searchTerm}?store_spot=${storeSpot}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
