@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
+    open: false, // 브라우저 자동 열기 비활성화
     proxy: {
       '/auth': {
         target: 'http://localhost:8000', // 백엔드 서버 주소 (필요에 따라 변경)
