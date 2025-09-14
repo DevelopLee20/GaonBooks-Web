@@ -1,9 +1,10 @@
 import io
 import re
 import pandas as pd
-from fastapi import APIRouter, File, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 
 from app.core.enums import STORE_SPOT
+from app.core.security import get_current_user
 from app.services.book_service import BookService
 from app.schemas.book_schema import (
     AddBookData,
@@ -17,6 +18,7 @@ from app.schemas.book_schema import (
 router = APIRouter(
     prefix="/books",
     tags=["Books"],
+    dependencies=[Depends(get_current_user)],
 )
 
 
