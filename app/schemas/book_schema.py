@@ -38,3 +38,8 @@ class GetBooksResponse(BaseResponseModel):
 
 class DeleteBookResponse(BaseResponseModel):
     pass
+
+
+class UploadBooksResponse(BaseResponseModel):
+    total_books_in_file: int = Field(..., description="엑셀 파일에 있는 총 책 수")
+    added_books_count: int = Field(..., description="성공적으로 추가된 책 수")

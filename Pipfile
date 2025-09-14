@@ -4,11 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-uvicorn = "*"
 fastapi = "*"
-pydantic-settings = "*"
-motor = "*"
-pre-commit = "*"
+uvicorn = {version = "*", extras = ["standard"]}
+beanie = "*"
+python-dotenv = "*"
+pandas = "*"
+openpyxl = "*"
+python-multipart = "*"
 
 [dev-packages]
 
