@@ -11,6 +11,8 @@ python-dotenv = "*"
 pandas = "*"
 openpyxl = "*"
 python-multipart = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
+python-jose = "*"
 
 [dev-packages]
 
