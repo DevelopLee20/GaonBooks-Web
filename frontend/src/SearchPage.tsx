@@ -69,6 +69,19 @@ const SearchPage: React.FC = () => {
       <div className="card p-4 shadow-lg d-flex flex-column" style={{ width: '90%', height: '90%', borderTop: '5px solid #7ac142' }}>
         <h2 className="card-title text-success text-uppercase fw-bold mb-4 text-center">
           {storeSpot ? `${storeSpot} 검색 페이지` : '검색 페이지'}
+          <button
+            onClick={() => navigate('/admin')}
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              width: '20px',
+              height: '20px',
+              opacity: 0, // Hidden
+              cursor: 'pointer',
+            }}
+            aria-label="Admin Page"
+          ></button>
         </h2>
         <div className="text-center mb-4">
           <p>환영합니다! 이곳은 {storeSpot} 지점의 검색 페이지입니다.</p>

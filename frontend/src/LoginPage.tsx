@@ -54,6 +54,7 @@ const LoginPage: React.FC = () => {
 
       const data = await response.json();
       localStorage.setItem('token', data.access_token);
+      localStorage.setItem('storeSpot', storeSpot); // Add this line
       console.log('Login successful:', data);
       // Here you would typically store the token (e.g., in localStorage or a state management solution)
       // and redirect the user to a protected route.
