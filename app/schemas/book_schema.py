@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List
+from datetime import datetime
 
 from app.core.base_response import BaseResponseModel
 from app.core.enums import STORE_SPOT
@@ -21,7 +22,7 @@ class BookCreateModel(BaseModel):
     major: str | None = Field(..., description="전공")
     professor_name: str | None = Field(..., description="교수명")
     location: str | None = Field(..., description="위치")
-    order_count: int | None = Field(..., description="주문")
+    order_date: datetime | None = Field(..., description="주문날짜")
 
 
 class AddBookData(BaseModel):

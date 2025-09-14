@@ -27,7 +27,7 @@ class BookCollection:
             major=document["major"],
             professor_name=document["professor_name"],
             location=document["location"],
-            order_count=document["order_count"],
+            order_date=document["order_date"],
             deleted_at=document.get("deleted_at"),
         )
 

@@ -40,27 +40,24 @@ async def upload_books_from_excel(
 
     contents = await file.read()
     df = pd.read_excel(io.BytesIO(contents), engine="openpyxl")
+    df = df.astype(object).where(pd.notna(df), None)
 
-    df.columns = [
-        "subject_name",
-        "book_and_author",
-        "publisher",
-        "request_count",
-        "received_count",
-        "price",
-        "fulfillment_rate",
-        "major",
-        "professor_name",
-        "location",
-        "order_count",
-    ]
+    if "도서명(저자)" not in df.columns:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="'도서명(저자)' 컬럼이 엑셀 파일에 존재하지 않습니다.",
+        )
 
     added_books_count = 0
     total_books_in_file = len(df)
 
     for _, row in df.iterrows():
-        book_title = row["book_and_author"]
+        book_title: str = row["도서명(저자)"]
         author = None
+
+        if book_title is None:
+            total_books_in_file -= 1
+            continue
 
         match = re.search(r"\((.*?)\)", book_title)
         if match:
@@ -69,18 +66,18 @@ async def upload_books_from_excel(
 
         book_data = BookCreateModel(
             store_spot=store_spot,
-            subject_name=row.get("subject_name"),
+            subject_name=row.get("과목명"),
             book_title=book_title,
             author=author,
-            publisher=row.get("publisher"),
-            request_count=row.get("request_count"),
-            received_count=row.get("received_count"),
-            price=row.get("price"),
-            fulfillment_rate=row.get("fulfillment_rate"),
-            major=row.get("major"),
-            professor_name=row.get("professor_name"),
-            location=row.get("location"),
-            order_count=row.get("order_count"),
+            publisher=row.get("출판사"),
+            request_count=row.get("신청"),
+            received_count=row.get("입고"),
+            price=row.get("가격"),
+            fulfillment_rate=row.get("입고율"),
+            major=row.get("전공"),
+            professor_name=row.get("교수명"),
+            location=row.get("위치"),
+            order_date=row.get("주문"),
         )
 
         inserted_id = await BookService.insert_book(book_data=book_data)

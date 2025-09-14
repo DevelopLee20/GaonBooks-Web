@@ -1,5 +1,6 @@
 import dataclasses
 from pydantic import Field
+from datetime import datetime
 
 from app.core.base_document import BaseModel
 from app.core.enums import STORE_SPOT
@@ -19,4 +20,4 @@ class BookDocument(BaseModel):
     major: str | None = Field(..., description="전공")
     professor_name: str | None = Field(..., description="교수명")
     location: str | None = Field(..., description="위치")
-    order_count: int | None = Field(..., description="주문")
+    order_date: datetime | None = Field(..., description="주문날짜")

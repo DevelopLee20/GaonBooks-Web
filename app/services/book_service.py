@@ -21,7 +21,7 @@ class BookService:
             major=book_data.major,
             professor_name=book_data.professor_name,
             location=book_data.location,
-            order_count=book_data.order_count,
+            order_date=book_data.order_date,
         )
         inserted_id = await BookCollection.insert_book(document=book_document)
 
