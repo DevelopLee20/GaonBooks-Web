@@ -82,7 +82,7 @@ async def upload_books_from_excel(
             fulfillment_rate=str(row.get("입고율")),
             major=row.get("전공"),
             professor_name=row.get("교수명"),
-            location=row.get("위치"),
+            location=str(row.get("위치")),
             order_date=row.get("주문"),
         )
 
