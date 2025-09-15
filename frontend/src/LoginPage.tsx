@@ -31,8 +31,12 @@ const LoginPage: React.FC = () => {
         if (data.length > 0) {
           setStoreSpot(data[0]);
         }
-      } catch (err: any) {
-        setOptionsError(err.message);
+      } catch (err) {
+        if (err instanceof Error) {
+          setOptionsError(err.message);
+        } else {
+          setOptionsError('알 수 없는 오류가 발생했습니다.');
+        }
       } finally {
         setOptionsLoading(false);
       }
@@ -67,8 +71,12 @@ const LoginPage: React.FC = () => {
       // and redirect the user to a protected route.
       // alert('Login successful! Token: ' + data.access_token); // 제거
       navigate(`/search/${storeSpot}`); // 추가
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('알 수 없는 오류가 발생했습니다.');
+      }
     } finally {
       setLoading(false);
     }

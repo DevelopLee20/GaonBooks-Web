@@ -82,8 +82,12 @@ const AdminPage: React.FC = () => {
 
       const result = await response.json();
       setMessage(`${result.detail}\n\n총 책 수: ${result.added_books_count}`);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('알 수 없는 오류가 발생했습니다.');
+      }
     } finally {
       setLoading(false);
     }

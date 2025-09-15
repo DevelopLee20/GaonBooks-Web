@@ -37,7 +37,11 @@ class BookService:
         return await BookCollection.delete_books_by_store_spot(store_spot=store_spot)
 
     @classmethod
-    async def select_books_by_title(cls, book_title: str, store_spot: STORE_SPOT) -> List[BookDocument]:
-        books = await BookCollection.select_book_by_book_title(book_title=book_title, store_spot=store_spot)
+    async def select_books_by_title(
+        cls, book_title: str, store_spot: STORE_SPOT
+    ) -> List[BookDocument]:
+        books = await BookCollection.select_book_by_book_title(
+            book_title=book_title, store_spot=store_spot
+        )
 
         return books

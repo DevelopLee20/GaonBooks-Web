@@ -1,7 +1,7 @@
 import io
-import re
 import pandas as pd
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from datetime import datetime
 
 from app.core.enums import STORE_SPOT
 from app.core.security import get_current_user
@@ -65,25 +65,28 @@ async def upload_books_from_excel(
             total_books_in_file -= 1
             continue
 
-        match = re.search(r"\((.*?)\)", book_title)
-        if match:
-            author = match.group(1)
-            book_title = book_title.replace(f"({author})", "").strip()
+        order_date = row.get("주문")
+        try:
+            # order_date를 datetime으로 변환
+            if isinstance(order_date, str):
+                order_date = datetime.strptime(order_date, "%Y-%m-%d")
+        except ValueError:
+            order_date = None
 
         book_data = BookCreateModel(
             store_spot=store_spot,
-            subject_name=row.get("과목명"),
-            book_title=book_title,
-            author=author,
-            publisher=row.get("출판사"),
+            subject_name=str(row.get("과목명")),
+            book_title=str(book_title),
+            author=str(author),
+            publisher=str(row.get("출판사")),
             request_count=str(row.get("신청", "0")),
             received_count=str(row.get("입고", "0")),
             price=str(row.get("가격")),
             fulfillment_rate=str(row.get("입고율")),
-            major=row.get("전공"),
-            professor_name=row.get("교수명"),
+            major=str(row.get("전공")),
+            professor_name=str(row.get("교수명")),
             location=str(row.get("위치")),
-            order_date=row.get("주문"),
+            order_date=order_date,
         )
 
         inserted_id = await BookService.insert_book(book_data=book_data)
@@ -146,8 +149,12 @@ async def delete_book(book_id: str) -> DeleteBookResponse:
     status_code=status.HTTP_200_OK,
     summary="제목으로 책을 검색합니다. (유사한 제목 포함)",
 )
-async def get_books_by_title(book_title: str, store_spot: STORE_SPOT) -> GetBooksResponse:
-    books = await BookService.select_books_by_title(book_title=book_title, store_spot=store_spot)
+async def get_books_by_title(
+    book_title: str, store_spot: STORE_SPOT
+) -> GetBooksResponse:
+    books = await BookService.select_books_by_title(
+        book_title=book_title, store_spot=store_spot
+    )
 
     if not books:
         raise HTTPException(

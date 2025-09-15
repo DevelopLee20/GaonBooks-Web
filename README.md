@@ -28,7 +28,7 @@ pipenv run gunicorn app.main:app \
 pipenv run uvicorn app.main:app --reload
 ```
 
-# run - frontend
+## run - frontend
 
 ```bash
 npm run dev -- --port 5555

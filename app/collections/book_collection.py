@@ -53,7 +53,9 @@ class BookCollection:
         return result.deleted_count
 
     @classmethod
-    async def select_book_by_book_title(cls, book_title: str, store_spot: STORE_SPOT) -> List[BookDocument]:
+    async def select_book_by_book_title(
+        cls, book_title: str, store_spot: STORE_SPOT
+    ) -> List[BookDocument]:
         result = await cls._collection.find(
             filter={
                 "book_title": {"$regex": book_title, "$options": "i"},
