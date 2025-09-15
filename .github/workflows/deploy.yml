@@ -23,8 +23,9 @@ jobs:
           script: |
             # Assume project is located at ~/GaonBooks-Web
             cd ~/GaonBooks-Web
-            git pull origin master
             git checkout master
+            git reset --hard HEAD
+            git pull origin master
 
             # Backend Deployment
             echo "--- Deploying Backend ---"
