@@ -22,8 +22,7 @@ jobs:
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
             cd ~/GaonBooks-Web
-            git checkout master
-            git reset --hard HEAD
-            git pull origin master
+            git fetch origin master
+            git reset --hard origin/master
             chmod +x scripts/deploy.sh
             ./scripts/deploy.sh
