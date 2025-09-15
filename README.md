@@ -34,3 +34,7 @@ pipenv run uvicorn app.main:app --reload
 ```bash
 npm run dev -- --port 5555
 ```
+
+```bash
+pm2 startup
+```
