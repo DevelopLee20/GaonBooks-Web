@@ -21,39 +21,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
-            # Assume project is located at ~/GaonBooks-Web
             cd ~/GaonBooks-Web
             git checkout master
             git reset --hard HEAD
             git pull origin master
-
-            # Backend Deployment
-            echo "--- Deploying Backend ---"
-            # Install dependencies from Pipfile.lock
-            pipenv sync
-            # Kill old gunicorn process if it exists
-            pkill -f "gunicorn app.main:app" || true
-            # Start new gunicorn process in the background
-            pipenv run gunicorn app.main:app \
-                --name gaonbooks-dev \
-                -w 2 \
-                -k uvicorn.workers.UvicornWorker \
-                --bind 0.0.0.0:8000 \
-                --access-logfile ./gunicorn-access.log \
-                --error-logfile ./gunicorn-error.log \
-                --capture-output \
-                --log-level info \
-                --daemon
-            echo "Backend deployment command issued."
-
-            # Frontend Deployment
-            echo "--- Deploying Frontend ---"
-            cd frontend
-            npm install
-            # Install pm2 globally if not already installed
-            npm install -g pm2
-            # Restart frontend process with pm2, or start it if it doesn't exist
-            pm2 restart frontend || pm2 start "npm run dev -- --host 0.0.0.0 --port 5555" --name frontend
-            # Save the pm2 process list to resurrect on reboot
-            pm2 save
-            echo "Frontend deployment command issued."
+            chmod +x scripts/deploy.sh
+            ./scripts/deploy.sh
