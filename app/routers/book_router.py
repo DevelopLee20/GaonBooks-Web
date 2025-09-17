@@ -15,7 +15,6 @@ from app.schemas.book_schema import (
 router = APIRouter(
     prefix="/books",
     tags=["Books"],
-    dependencies=[Depends(get_current_user)],
 )
 
 
@@ -24,6 +23,7 @@ router = APIRouter(
     response_model=UploadBooksResponse,
     status_code=status.HTTP_201_CREATED,
     summary="엑셀 파일로 책 목록을 추가합니다.",
+    dependencies=[Depends(get_current_user)],
 )
 async def upload_books_from_excel(
     store_spot: STORE_SPOT,
@@ -49,6 +49,7 @@ async def upload_books_from_excel(
     response_model=AddBookResponse,
     status_code=status.HTTP_201_CREATED,
     summary="책을 추가합니다",
+    dependencies=[Depends(get_current_user)],
 )
 async def add_book(book_data: BookCreateModel) -> AddBookResponse:
     inserted_id = await BookService.insert_book(book_data=book_data)
@@ -71,6 +72,7 @@ async def add_book(book_data: BookCreateModel) -> AddBookResponse:
     response_model=DeleteBookResponse,
     status_code=status.HTTP_200_OK,
     summary="책을 삭제합니다.",
+    dependencies=[Depends(get_current_user)],
 )
 async def delete_book(book_id: str) -> DeleteBookResponse:
     if not await BookService.delete_book_by_id(book_id=book_id):

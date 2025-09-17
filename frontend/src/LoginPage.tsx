@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [storeSpotOptions, setStoreSpotOptions] = useState<string[]>([]);
@@ -11,6 +12,9 @@ const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [optionsLoading, setOptionsLoading] = useState(true);
   const [optionsError, setOptionsError] = useState('');
+
+  const from = location.state?.from?.pathname || `/search/${storeSpot}`;
+
 
   // 지점을 한글로 변경하는 부분
   const storeSpotMap: { [key: string]: string } = {
@@ -73,7 +77,8 @@ const LoginPage: React.FC = () => {
       // Here you would typically store the token (e.g., in localStorage or a state management solution)
       // and redirect the user to a protected route.
       // alert('Login successful! Token: ' + data.access_token); // 제거
-      navigate(`/search/${storeSpot}`); // 추가
+      const redirectTo = location.state?.from?.pathname || `/search/${storeSpot}`;
+      navigate(redirectTo, { replace: true });
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -88,7 +93,7 @@ const LoginPage: React.FC = () => {
   return (
     <div className="container-fluid d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
       <div className="card p-4 shadow-lg" style={{ width: '420px', borderTop: '5px solid #7ac142' }}>
-        <h2 className="card-title text-success text-uppercase fw-bold mb-4">가온북스 도서검색</h2>
+        <h2 className="card-title text-success text-uppercase fw-bold mb-4">가온북스 도서 관리</h2>
         <form onSubmit={handleSubmit} className="mt-4">
           {error && <p className="text-danger text-center mb-4">{error}</p>}
           <div className="mb-4">

@@ -96,6 +96,12 @@ const AdminPage: React.FC = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('storeSpot');
+    navigate('/');
+  };
+
   return (
     <div className="container-fluid d-flex align-items-center justify-content-center vh-100 bg-light">
       <div className="card p-4 shadow-lg" style={{ width: '500px', borderTop: '5px solid #7ac142' }}>
@@ -125,7 +131,7 @@ const AdminPage: React.FC = () => {
           </button>
         </form>
         <div className="mt-3 text-center">
-          <button className="btn btn-link" onClick={() => navigate(`/search/${storeSpot}`)}>검색 페이지로 돌아가기</button>
+          <button className="btn btn-outline-secondary" onClick={handleLogout}>로그아웃</button>
         </div>
       </div>
     </div>

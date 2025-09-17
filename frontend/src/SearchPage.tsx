@@ -25,14 +25,7 @@ const SearchPage: React.FC = () => {
 
   const displayStoreSpot = storeSpot ? storeSpotMap[storeSpot] || storeSpot : '';
 
-  useEffect(() => {
-    const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
-    if (!token && !isAuthenticated.current) {
-      isAuthenticated.current = true; // Mark as checked to prevent re-triggering
-      alert('로그인이 필요합니다.');
-      navigate('/login');
-    }
-  }, [navigate]);
+  
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Book[]>([]);
@@ -57,12 +50,7 @@ const SearchPage: React.FC = () => {
     setSearchResults([]);
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/books/search/${searchTerm}?store_spot=${storeSpot}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(`/books/search/${searchTerm}?store_spot=${storeSpot}`);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.detail || '검색 중 오류가 발생했습니다.');
