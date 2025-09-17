@@ -153,7 +153,7 @@ const LoginPage: React.FC = () => {
         </form>
       </div>
       <div className="text-center text-muted mt-3" style={{ fontSize: '0.8em' }}>
-        <p className="mb-0">version 1.2.0</p>
+        <p className="mb-0">version 1.2.１</p>
         <p className="mb-0">author developlee20</p>
       </div>
     </div>
