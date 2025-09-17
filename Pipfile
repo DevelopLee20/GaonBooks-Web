@@ -12,6 +12,7 @@ pandas = "*"
 openpyxl = "*"
 python-multipart = "*"
 passlib = {extras = ["bcrypt"], version = "*"}
+bcrypt = "<4.0"
 python-jose = "*"
 pydantic-settings = "*"
 motor = "*"
@@ -20,4 +21,4 @@ motor = "*"
 pre-commit = "*"
 
 [requires]
-python_version = ">= 3.12"
+python_version = "3.12"
