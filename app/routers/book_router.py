@@ -1,7 +1,4 @@
-import io
-import pandas as pd
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
-from datetime import datetime
 
 from app.core.enums import STORE_SPOT
 from app.core.security import get_current_user
@@ -32,66 +29,11 @@ async def upload_books_from_excel(
     store_spot: STORE_SPOT,
     file: UploadFile = File(...),
 ) -> UploadBooksResponse:
-    if file.content_type not in [
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ]:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="엑셀 파일(.xlsx)만 업로드할 수 있습니다.",
-        )
-
-    del_files = await BookService.delete_books_by_store_spot(
-        store_spot=store_spot.value
-    )
-
-    contents = await file.read()
-    df = pd.read_excel(io.BytesIO(contents), engine="openpyxl")
-    df = df.astype(object).where(pd.notna(df), None)
-
-    if "도서명(저자)" not in df.columns:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="'도서명(저자)' 컬럼이 엑셀 파일에 존재하지 않습니다.",
-        )
-
-    added_books_count = 0
-    total_books_in_file = len(df)
-
-    for _, row in df.iterrows():
-        book_title: str = row["도서명(저자)"]
-        author = None
-
-        if book_title is None:
-            total_books_in_file -= 1
-            continue
-
-        order_date = row.get("주문")
-        try:
-            # order_date를 datetime으로 변환
-            if isinstance(order_date, str):
-                order_date = datetime.strptime(order_date, "%Y-%m-%d")
-        except ValueError:
-            order_date = None
-
-        book_data = BookCreateModel(
-            store_spot=store_spot,
-            subject_name=str(row.get("과목명")),
-            book_title=str(book_title),
-            author=str(author),
-            publisher=str(row.get("출판사")),
-            request_count=str(row.get("신청", "0")),
-            received_count=str(row.get("입고", "0")),
-            price=str(row.get("가격")),
-            fulfillment_rate=str(row.get("입고율")),
-            major=str(row.get("전공")),
-            professor_name=str(row.get("교수명")),
-            location=str(row.get("위치")),
-            order_date=order_date,
-        )
-
-        inserted_id = await BookService.insert_book(book_data=book_data)
-        if inserted_id:
-            added_books_count += 1
+    (
+        total_books_in_file,
+        added_books_count,
+        del_files,
+    ) = await BookService.insert_all_books_to_file(store_spot=store_spot, file=file)
 
     return UploadBooksResponse(
         detail="엑셀 파일의 책 목록을 성공적으로 추가했습니다.",
