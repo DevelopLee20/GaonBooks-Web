@@ -16,7 +16,8 @@ fi
 
 # 3. 백엔드 실행
 echo ">>> 백엔드(Gunicorn) 실행..."
-pipenv run gunicorn app.main:app \
+/home/ingyu/anaconda3/bin/pipenv install
+/home/ingyu/anaconda3/bin/pipenv run gunicorn app.main:app \
     --name "$APP_NAME" \
     -w 2 \
     -k uvicorn.workers.UvicornWorker \
