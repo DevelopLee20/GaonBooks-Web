@@ -2,6 +2,8 @@
 
 가온북스 책검색 웹사이트
 
+![QR 코드](./app/assets/naver_site_qr_20250917.jpg)
+
 - python 3.12
 
 ## pre-commit run
