@@ -21,6 +21,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
-            cd ~/GaonBooks-Web            
+            cd ~/GaonBooks-Web
+            git fetch origin
+            git reset --hard origin/master
+            git pull origin master  
             chmod +x depoly.sh
             bash depoly.sh
