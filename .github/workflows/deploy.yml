@@ -21,4 +21,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
-            cd ~/GaonBooks-Web && ./deploy.sh"
+            cd ~/GaonBooks-Web && ./deploy.sh
