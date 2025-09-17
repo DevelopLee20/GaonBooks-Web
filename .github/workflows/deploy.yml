@@ -1,28 +1,25 @@
-# name: Deploy to Ubuntu Server
+name: Deploy to Server
 
-# on:
-#   push:
-#     branches:
-#       - master
+on:
+  push:
+    branches:
+      - master
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-22.04
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-#       - name: Deploy to server
-#         uses: appleboy/ssh-action@master
-#         with:
-#           host: ${{ secrets.SSH_HOST }}
-#           username: ${{ secrets.SSH_USERNAME }}
-#           key: ${{ secrets.SSH_PRIVATE_KEY }}
-#           port: ${{ secrets.SSH_PORT || 22 }}
-#           script: |
-#             cd ~/GaonBooks-Web
-#             git fetch origin master
-#             git reset --hard origin/master
-#             chmod +x scripts/deploy.sh
-#             ./scripts/deploy.sh
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Run deploy script on server
+        run: |
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
+            "cd /path/to/your/project && ./deploy.sh"
