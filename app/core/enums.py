@@ -7,5 +7,8 @@ class MODE(str, Enum):
 
 
 class STORE_SPOT(str, Enum):
-    soonchunhyang = "soonchunhyang"
-    develop = "develop"
+    sch = "sch"
+    sunmoon = "sunmoon"
+    nasaret = "nasaret"
+    kongju = "kongju"
+    mokwon = "mokwon"

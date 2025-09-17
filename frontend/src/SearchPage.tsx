@@ -15,8 +15,11 @@ const SearchPage: React.FC = () => {
 
   // 지점을 한글로 변경하는 부분
   const storeSpotMap: { [key: string]: string } = {
-    soonchunhyang: '순천향대학교',
-    develop: '개발용',
+    sch: '순천향대학교',
+    sunmoon: "선문대학교",
+    nasaret: "나사렛대학교",
+    kongju: "공주대학교",
+    mokwon: "목원대학교",
     // Add other store spots as needed
   };
 
