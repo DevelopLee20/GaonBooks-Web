@@ -30,6 +30,6 @@ echo ">>> 백엔드(Gunicorn) 실행..."
 
 # 4. 프론트엔드 재시작 (pm2)
 echo ">>> 프론트엔드(pm2) 재시작..."
-pm2 restart frontend
+/home/ingyu/.nvm/versions/node/v20.19.5/bin/pm2 restart frontend
 
 echo ">>> 배포 완료!"
