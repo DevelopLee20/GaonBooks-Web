@@ -6,7 +6,7 @@ APP_NAME="gaonbooks-dev"
 # 1. 깃허브 코드 강제 업데이트
 echo ">>> GitHub 코드 업데이트 중..."
 git fetch origin
-git reset --hard origin/main   # 브랜치 맞게 수정하세요
+git reset --hard origin/master
 
 # 2. 기존 gunicorn 프로세스 종료 (이름 기준)
 echo ">>> 기존 Gunicorn 종료..."
