@@ -114,7 +114,7 @@ const SearchPage: React.FC = () => {
             <p className="text-center text-muted">검색 결과가 없습니다.</p>
           )}
           {!loading && !error && searchResults.length === 0 && searchTerm.trim() === '' && (
-            <p className="text-center text-muted">책 제목을 입력하여 검색하세요.</p>
+            <p className="text-center text-muted">책 제목이나 키워드로 입력하여 검색하세요.</p>
           )}
           {!loading && !error && searchResults.length > 0 && (
             <ul className="list-group list-group-flush">
