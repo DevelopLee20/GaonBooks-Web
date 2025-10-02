@@ -16,6 +16,7 @@ fi
 
 # 3. 백엔드 실행
 echo ">>> 백엔드(Gunicorn) 실행..."
+#TODO: Lock 파일 삭제 및 pipenv clean 진행해야 함
 /home/ingyu/anaconda3/bin/pipenv install
 /home/ingyu/anaconda3/bin/pipenv run gunicorn app.main:app \
     --name "$APP_NAME" \
